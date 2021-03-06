@@ -3,8 +3,7 @@ services:
   - docker
 
 before_install:
-  - docker build -t ranugoldan/react-test -f ./client/Dockerfile.dev
-  - docker build myotherproject
+  - docker build -t ranugoldan/react-test -f ./client/Dockerfile.dev ./client
 
 script:
   - docker run ranugoldan/react-test npm test -- --coverage
