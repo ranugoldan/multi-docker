@@ -1,0 +1,23 @@
+sudo: required
+services:
+  - docker
+
+before_install:
+  - docker build -t ranugoldan/react-test -f ./client/Dockerfile.dev
+  - docker build myotherproject
+
+script:
+  - docker run ranugoldan/react-test npm test -- --coverage
+
+after_success:
+  - docker build -t ranugoldan/multi-client ./client
+  - docker build -t ranugoldan/multi-nginx ./nginx
+  - docker build -t ranugoldan/multi-server ./server
+  - docker build -t ranugoldan/multi-worker ./worker
+  # Login to the docker CLI
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+  # Push
+  - docker push ranugoldan/multi-client
+  - docker push ranugoldan/multi-nginx
+  - docker push ranugoldan/multi-server
+  - docker push ranugoldan/multo-worker
