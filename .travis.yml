@@ -16,7 +16,7 @@ after_success:
   - docker build -t ranugoldan/multi-server ./server
   - docker build -t ranugoldan/multi-worker ./worker
   # Login to the docker CLI
-  - docker login -u "$DOCKER_ID" -p "$DOCKER_PASSWORD"
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
   # Push
   - docker push ranugoldan/multi-client
   - docker push ranugoldan/multi-nginx
